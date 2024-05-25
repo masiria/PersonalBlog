@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}home{% endblock %}
+
+{% block extra_head %}
+    <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{% static 'post/css/home-styles.css' %}" rel="stylesheet" />
+{% endblock %}
+
+    {% block content %}
+        <!-- Page header with logo and tagline-->
+        <header class="py-5 bg-light border-bottom mb-4">
+            <div class="container">
+                <div class="text-center my-5">
+                    <h1 class="fw-bolder">Personal blog</h1>
+                    <p class="lead mb-0">Sample personal blog project with django</p>
+                </div>
+            </div>
+        </header>
+        <!-- Page content-->
+        <div class="container">
+            <div class="row">
+                <!-- Blog entries-->
+                <h3 class="py-2">Latest posts</h3>
+                <div class="col-lg-8">
+                    <!-- blog posts-->
+                    <div class="row">
+                        {% for post in posts %}
+                            <div class="col-lg-6">
+                                <!-- Blog post-->
+                                <div class="card mb-4">
+                                    <a href="#!"><img class="card-img-top" src="{{ post.thumbnail.url }}" alt="..." /></a>
+                                    <div class="card-body">
+                                        <div class="small text-muted">{{ post.modify_date.date }}</div>
+                                        <h2 class="card-title h4">{{ post.title }}</h2>
+                                        <p class="card-text">{{ post.content|truncatewords:20 }}</p>
+                                        <a class="btn btn-primary" href="{% url 'post:post' post.slug %}">Read more →</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- Side widgets-->
+                <div class="col-lg-4">
+                    <!-- Popular tags-->
+                    <div class="card mb-4">
+                        <div class="card-header">Popular tags</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    {% for p_tag in popular_tags %}
+                                        <ul class="list-unstyled mb-0">
+                                            <li>
+                                                <a class="badge bg-secondary text-decoration-none link-light" href="{% url 'post:tag' p_tag.slug %}">
+                                                    {{ p_tag.name }}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    {% endfor %}                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Popular posts -->
+                    <div class="card mb-3">
+                        <div class="card-header">Popular Posts</div>
+                        {% for p_post in popular_posts %}
+                            <div class="px-2 py-3">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                  <img src="{{ p_post.thumbnail.url }}" class="img-fluid rounded-start" alt="...">
+                                </div>
+                                <div class="col-md-8">
+                                  <div class="card-body">
+                                    <a class="text-decoration-none" href="{% url 'post:post' p_post.slug %}">
+                                        <p class="card-title h6">{{ p_post.title }}</p>
+                                    </a>
+                                    <p class="card-text">{{ p_post.content|truncatewords:5 }}</p>
+                                  </div>
+                                </div>
+                          </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'registration/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block page_title %}Register{% endblock %}
+<!-- Custom styles for this template -->
+{% block head_extra %}
+    <link href="{% static 'users/css/signin-up.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block page_content %}
+    <div class="container">
+      <main>
+          <div class="py-5 text-center">
+            <h2>Signup form</h2>
+          </div>
+          <div class="col-auto">
+            <form method="post">
+                {% csrf_token %}
+              <div class="row g-3">
+                <div class="col-sm-12">
+                  <label for="username" class="form-label">Username</label>
+                  {{ form.username|add_class:"form-control"|attr:"id:username" }}
+                </div>
+                <div class="col-sm-12">
+                  <label for="email" class="form-label">Email address</label>
+                    {{ form.email|add_class:"form-control"|attr:"id:email" }}
+                </div>
+                <div class="col-sm-12">
+                  <label for="pass1" class="form-label">Password</label>
+                  {{ form.password1|add_class:"form-control"|attr:"id:pass1" }}
+                </div>
+                <div class="col-sm-12">
+                  <label for="pass2" class="form-label">Confirm password</label>
+                  {{ form.password2|add_class:"form-control"|attr:"id:pass2" }}
+                </div>
+                <button class="w-100 btn btn-primary btn-lg" type="submit">Register</button>
+              </div>
+            </form>
+              <p class="mt-5">Have an account? <a class="text-decoration-none" href="{% url 'login' %}">Login</a></p>
+          </div>
+      </main>
+    </div>
+
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+{% endblock %}
+

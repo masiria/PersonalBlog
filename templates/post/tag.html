@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ tag.name }}{% endblock %}
+
+{% block extra_head %}
+    <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{% static 'post/css/home-styles.css' %}" rel="stylesheet" />
+{% endblock %}
+
+    {% block content %}
+        <!-- Page header with logo and tagline-->
+        <header class="py-5 bg-light border-bottom mb-4">
+            <div class="container">
+                <div class="text-center my-5">
+                    <h1 class="fw-bolder">{{ tag.name }}</h1>
+                    <p class="lead mb-0">A sample page for {{ tag.name }}</p>
+                </div>
+            </div>
+        </header>
+        <!-- Page content-->
+        <div class="container">
+            <div class="row">
+                <!-- Blog entries-->
+                <div class="col-lg-12">
+                    <!-- blog posts-->
+                    <div class="row">
+                        {% for post in posts %}
+                            <div class="col-lg-6">
+                                <!-- Blog post-->
+                                <div class="card mb-4">
+                                    <a href="#!"><img class="card-img-top" src="{{ post.thumbnail.url }}" alt="..." /></a>
+                                    <div class="card-body">
+                                        <div class="small text-muted">{{ post.modify_date.date }}</div>
+                                        <h2 class="card-title h4">{{ post.title }}</h2>
+                                        <p class="card-text">{{ post.content|truncatewords:20 }}</p>
+                                        <a class="btn btn-primary" href="{% url 'post:post' post.slug %}">Read more →</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <!-- Pagination-->
+                    <nav aria-label="Pagination">
+                        <hr class="my-0" />
+                        <ul class="pagination justify-content-center my-4">
+                            <li class="page-item {% if posts.number == 1 %}disabled{% endif %}">
+                                <a class="page-link" href="{% if posts.has_previous %}{% url 'post:tag' tag.slug posts.previous_page_number %}{% endif %}" tabindex="-1" aria-disabled="true">
+                                    Newer
+                                </a>
+                            </li>
+                                    {% for page_num in paginator.page_range %}
+                                        <li class="page-item">
+                                            <a class="page-link {% if page_num == posts.number %}active{% endif %}" href="{% url 'post:tag' tag.slug page_num %}">
+                                                {{ page_num }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                            <li class="page-item {% if posts.number == paginator.num_pages %}disabled{% endif %}">
+                                <a class="page-link" href="{% if posts.has_next %}{% url 'post:tag' tag.slug posts.next_page_number %}{% endif %}">
+                                    Older
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
